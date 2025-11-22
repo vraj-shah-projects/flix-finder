@@ -1,2 +1,2 @@
 # flix-finder
-Programs that recommend new Spotify songs and Netflix movies/shows
+Programs that recommends Netflix movies/shows based on current viewings

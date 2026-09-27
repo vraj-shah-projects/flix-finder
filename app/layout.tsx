@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { signout } from '@/app/login/actions'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,14 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export function SignOutButton() {
+  return (
+    <form>
+      <button formAction={signout}>Sign out</button>
+    </form>
+  )
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",

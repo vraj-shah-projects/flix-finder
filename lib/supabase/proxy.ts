@@ -32,7 +32,7 @@ export async function updateSession(request: NextRequest) {
   const user = data?.claims
 
     // Page routes that require a logged-in user - redirect to /login.
-  const protectedPagePaths = ['/dashboard', '/watchlist']
+  const protectedPagePaths = ['/dashboard', '/watchlist', '/stats']
   const isProtectedPage = protectedPagePaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
   )

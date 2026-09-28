@@ -39,3 +39,36 @@ export async function searchMovies(query: string): Promise<TmdbMovie[]> {
   const data = await res.json()
   return data.results
 }
+
+export async function getPopularMovies(): Promise<TmdbMovie[]> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/popular`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) throw new Error(`TMDB popular fetch failed: ${res.status}`)
+
+  const data = await res.json()
+  return data.results
+}
+
+export async function findMovieByTitleAndYear(
+  title: string,
+  year: string
+): Promise<TmdbMovie | null> {
+  const url = `${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(title)}&year=${year}`
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) return null
+
+  const data = await res.json()
+  return data.results?.[0] ?? null
+}

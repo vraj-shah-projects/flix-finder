@@ -31,14 +31,27 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims()
   const user = data?.claims
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
-  ) {
+    // Page routes that require a logged-in user - redirect to /login.
+  const protectedPagePaths = ['/dashboard', '/watchlist']
+  const isProtectedPage = protectedPagePaths.some((path) =>
+    request.nextUrl.pathname.startsWith(path)
+  )
+
+  if (!user && isProtectedPage) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  // API routes that require a logged-in user - return 401 JSON, not a redirect.
+  // TMDB search is intentionally excluded here since browsing is public.
+  const protectedApiPaths = ['/api/watchlist']
+  const isProtectedApi = protectedApiPaths.some((path) =>
+    request.nextUrl.pathname.startsWith(path)
+  )
+
+  if (!user && isProtectedApi) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
   // You *must* return supabaseResponse as-is (or copy its cookies onto

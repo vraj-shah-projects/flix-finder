@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { SignOutButton } from '@/components/sign-out-button'
+import { NavBar } from '@/components/nav-bar'
 import { StarRating } from '@/components/star-rating'
 import { markAsWatched, removeFromWatchlist } from '@/app/watchlist/actions'
 import Image from 'next/image'
@@ -30,13 +30,8 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-bg px-4 py-8 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="font-display text-4xl font-bold text-text">My Watchlist</h1>
-          <p className="text-text-muted text-sm">Signed in as {user?.email}</p>
-        </div>
-        <SignOutButton />
-      </div>
+      <h1 className="font-display text-4xl font-bold text-text mb-1">My Watchlist</h1>
+      <p className="text-text-muted text-sm mb-8">Signed in as {user?.email}</p>
 
       <section className="mb-10">
         <h2 className="font-display text-2xl font-bold text-text mb-4">

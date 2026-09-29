@@ -134,3 +134,33 @@ export async function getMovieRuntime(movieId: number): Promise<number | null> {
   const data = await res.json()
   return data.runtime ?? null
 }
+
+export type WatchProvider = {
+  provider_name: string
+  logo_path: string
+}
+
+export async function getWatchProviders(
+  movieId: number,
+  region = 'AU'
+): Promise<{ flatrate: WatchProvider[]; rent: WatchProvider[]; buy: WatchProvider[] } | null> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/watch/providers`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) return null
+
+  const data = await res.json()
+  const regionData = data.results?.[region]
+
+  if (!regionData) return null
+
+  return {
+    flatrate: regionData.flatrate ?? [],
+    rent: regionData.rent ?? [],
+    buy: regionData.buy ?? [],
+  }
+}

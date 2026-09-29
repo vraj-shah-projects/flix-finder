@@ -8,6 +8,7 @@ import { addToWatchlist } from '@/app/watchlist/actions'
 import type { TmdbMovie } from '@/lib/tmdb'
 import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
 import { TrailerButton } from '@/components/trailer-button'
+import { WatchProviders } from '@/components/watch-providers'
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
@@ -152,6 +153,7 @@ export default function SearchPage() {
               <AddToWatchlistButton movie={movie} />
               <TrailerButton movieId={movie.id} />
             </div>
+            <WatchProviders movieId={movie.id} />
           </div>
         ))}
       </div>

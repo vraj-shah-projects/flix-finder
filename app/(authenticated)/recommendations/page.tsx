@@ -80,7 +80,6 @@ export default async function RecommendationsPage() {
             </div>
             <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
             <p className="text-text-muted text-xs line-clamp-2">{movie.reason}</p>
-            <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
             <div className="flex gap-2">
               <AddToWatchlistButton movie={movie} />
               <TrailerButton movieId={movie.id} />

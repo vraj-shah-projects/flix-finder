@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { GenrePieChart } from '@/components/genre-pie-chart'
 
 export default async function StatsPage() {
   const supabase = await createClient()
@@ -53,20 +54,7 @@ export default async function StatsPage() {
       {sortedGenres.length === 0 ? (
         <p className="text-text-muted">Watch and rate some movies to see your genre breakdown.</p>
       ) : (
-        <div className="flex flex-col gap-3">
-          {sortedGenres.map(([genre, count]) => (
-            <div key={genre} className="flex items-center gap-3">
-              <p className="text-text text-sm w-28 shrink-0">{genre}</p>
-              <div className="flex-1 bg-surface h-3">
-                <div
-                  className="bg-accent h-full"
-                  style={{ width: `${(count / maxGenreCount) * 100}%` }}
-                />
-              </div>
-              <p className="text-text-muted text-sm w-6 text-right">{count}</p>
-            </div>
-          ))}
-        </div>
+        <GenrePieChart data={sortedGenres.map(([name, value]) => ({ name, value }))} />
       )}
     </div>
   )

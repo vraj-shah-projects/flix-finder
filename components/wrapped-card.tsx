@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import Image from 'next/image'
 import html2canvas from 'html2canvas-pro'
 import { Button } from '@/components/ui/button'
+import { Download } from 'lucide-react'
 
 type Props = {
   totalWatched: number
@@ -87,7 +88,8 @@ export function WrappedCard({ totalWatched, topGenre, averageRating, highestRate
         <p className="text-text italic border-t border-text-muted/20 pt-4">{blurb}</p>
       </div>
 
-      <Button onClick={handleDownload} disabled={downloading} className="mt-6">
+      <Button onClick={handleDownload} disabled={downloading} className="mt-6 gap-2">
+        <Download className="w-4 h-4" />
         {downloading ? 'Preparing image...' : 'Download as image'}
       </Button>
     </div>

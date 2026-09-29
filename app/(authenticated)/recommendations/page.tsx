@@ -4,6 +4,7 @@ import { generateTasteProfile } from '@/lib/gemini'
 import { getPopularMovies, findMovieByTitleAndYear, type TmdbMovie } from '@/lib/tmdb'
 import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
 import { TrailerButton } from '@/components/trailer-button'
+import { WatchProviders } from '@/components/watch-providers'
 
 export default async function RecommendationsPage() {
   const supabase = await createClient()
@@ -84,6 +85,7 @@ export default async function RecommendationsPage() {
               <AddToWatchlistButton movie={movie} />
               <TrailerButton movieId={movie.id} />
             </div>
+            <WatchProviders movieId={movie.id} />
           </div>
         ))}
       </div>

@@ -4,9 +4,11 @@ import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import { StarRating } from '@/components/star-rating'
 import { markAsWatched, markAsUnwatched, removeFromWatchlist } from '@/app/watchlist/actions'
+import { WatchProviders } from './watch-providers'
 
 type WatchlistItem = {
   id: string
+  tmdb_id: number
   title: string
   poster_path: string | null
   genres: string[]
@@ -117,6 +119,7 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
                 )}
               </div>
               <p className="text-text text-sm font-medium line-clamp-1">{item.title}</p>
+              <WatchProviders movieId={item.tmdb_id} />
               <form action={markAsWatchedForm.bind(null, item.id)}>
                 <button className="text-xs text-accent">Mark as watched</button>
               </form>

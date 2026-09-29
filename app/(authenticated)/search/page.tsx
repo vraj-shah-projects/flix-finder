@@ -9,6 +9,8 @@ import type { TmdbMovie } from '@/lib/tmdb'
 import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
 import { TrailerButton } from '@/components/trailer-button'
 import { WatchProviders } from '@/components/watch-providers'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Search } from 'lucide-react'
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
@@ -90,13 +92,13 @@ export default function SearchPage() {
           onClick={() => setMode('title')}
           className={`text-sm font-medium ${mode === 'title' ? 'text-accent' : 'text-text-muted'}`}
         >
-          Search by title
+          Title Search
         </button>
         <button
           onClick={() => setMode('mood')}
           className={`text-sm font-medium ${mode === 'mood' ? 'text-accent' : 'text-text-muted'}`}
         >
-          Search by mood
+          Smart Search 
         </button>
       </div>
 
@@ -124,8 +126,16 @@ export default function SearchPage() {
 
       {loading && <p className="text-text-muted">Loading...</p>}
 
-      {!loading && results.length === 0 && query && (
-        <p className="text-text-muted">No results found.</p>
+      {!loading && results.length === 0 && (
+        <EmptyState
+          icon={Search}
+          title={query || moodQuery ? 'No results found' : 'Start typing to search'}
+          description={
+            query || moodQuery
+              ? 'Try a different title or mood description.'
+              : 'Results appear when you press the Search button. Add anything that looks good to your watchlist.'
+          }
+        />
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

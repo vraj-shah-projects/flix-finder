@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { genreIdsToNames, type TmdbMovie } from '@/lib/tmdb'
+import { genreIdsToNames, getMovieRuntime, type TmdbMovie } from '@/lib/tmdb'
 
 export async function addToWatchlist(movie: TmdbMovie) {
   const supabase = await createClient()
@@ -14,12 +14,15 @@ export async function addToWatchlist(movie: TmdbMovie) {
     return { error: 'Not authenticated' }
   }
 
+  const runtime = await getMovieRuntime(movie.id)
+
   const { error } = await supabase.from('watchlist_items').insert({
     user_id: userId,
     tmdb_id: movie.id,
     title: movie.title,
     poster_path: movie.poster_path,
     genres: genreIdsToNames(movie.genre_ids),
+    runtime
   })
 
   if (error) {

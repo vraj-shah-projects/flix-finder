@@ -9,7 +9,7 @@ export default async function WrappedPage() {
 
   const { data: watched } = await supabase
     .from('watchlist_items')
-    .select('title, genres, rating, poster_path')
+    .select('title, genres, rating, poster_path, runtime')
     .eq('user_id', userId)
     .eq('status', 'watched')
 
@@ -23,6 +23,10 @@ export default async function WrappedPage() {
       </div>
     )
   }
+
+  const totalMinutes = items.reduce((sum, item) => sum + (item.runtime ?? 0), 0)
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
 
   const genreCounts: Record<string, number> = {}
   for (const item of items) {
@@ -53,6 +57,8 @@ export default async function WrappedPage() {
       averageRating={averageRating}
       highestRated={highestRated}
       blurb={blurb}
+      totalHours={hours}
+      totalMinutes={minutes}
     />
   )
 }

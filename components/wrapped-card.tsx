@@ -11,9 +11,11 @@ type Props = {
   averageRating: number | null
   highestRated: { title: string; poster_path: string | null; rating: number | null } | null
   blurb: string
+  totalHours: number
+  totalMinutes: number
 }
 
-export function WrappedCard({ totalWatched, topGenre, averageRating, highestRated, blurb }: Props) {
+export function WrappedCard({ totalWatched, topGenre, averageRating, highestRated, blurb, totalHours, totalMinutes }: Props) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [downloading, setDownloading] = useState(false)
 
@@ -32,16 +34,22 @@ export function WrappedCard({ totalWatched, topGenre, averageRating, highestRate
 
   return (
     <div>
-      <h1 className="font-display text-4xl font-bold text-text mb-6">Your Wrapped</h1>
+      <h1 className="font-display text-4xl font-bold text-text mb-6">Your FlixWrapped</h1>
 
-      <div ref={cardRef} className="bg-surface p-8 max-w-md flex flex-col gap-6">
-        <p className="font-display text-2xl font-bold text-accent">This Year in Film</p>
+      <div ref={cardRef} className="bg-surface p-8 max-w-xl flex flex-col gap-6">
+        <p className="font-display text-2xl font-bold text-accent">This Year in Flix</p>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <p className="font-display text-5xl font-bold text-text">{totalWatched}</p>
             <p className="text-text-muted text-sm">movies watched</p>
           </div>
+          <div>
+            <p className="font-display text-5xl font-bold text-text">
+                {totalHours}<span className="text-2xl">h</span> {totalMinutes}<span className="text-2xl">m</span>
+            </p>
+            <p className="text-text-muted text-sm">total watch time</p>
+            </div>
           <div>
             <p className="font-display text-5xl font-bold text-text">
               {averageRating !== null ? averageRating.toFixed(1) : '\u2014'}

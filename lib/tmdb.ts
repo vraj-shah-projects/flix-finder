@@ -120,3 +120,17 @@ export async function discoverMoviesByGenres(genreIds: number[]): Promise<TmdbMo
   const data = await res.json()
   return data.results
 }
+
+export async function getMovieRuntime(movieId: number): Promise<number | null> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) return null
+
+  const data = await res.json()
+  return data.runtime ?? null
+}

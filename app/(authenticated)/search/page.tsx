@@ -141,7 +141,7 @@ export default function SearchPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {results.map((movie) => (
           <div key={movie.id} className="flex flex-col gap-2">
-            <div className="relative aspect-[2/3] bg-surface">
+            <div className="relative aspect-[2/3] bg-surface rounded-lg overflow-hidden">
               {movie.poster_path ? (
                 <Image
                   src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}

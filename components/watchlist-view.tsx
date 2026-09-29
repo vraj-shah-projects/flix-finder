@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { StarRating } from '@/components/star-rating'
 import { markAsWatched, markAsUnwatched, removeFromWatchlist } from '@/app/watchlist/actions'
 import { WatchProviders } from './watch-providers'
+import { Check, RotateCcw, Trash2 } from 'lucide-react'
+import { ActionIconButton } from '@/components/action-icon-button'
 
 type WatchlistItem = {
   id: string
@@ -18,16 +20,9 @@ type WatchlistItem = {
   watched_at: string | null
 }
 
-async function markAsWatchedForm(itemId: string) {
-  await markAsWatched(itemId)
-}
 
 async function markAsUnwatchedForm(itemId: string) {
   await markAsUnwatched(itemId)
-}
-
-async function removeFromWatchlistForm(itemId: string) {
-  await removeFromWatchlist(itemId)
 }
 
 type SortOption = 'added_desc' | 'added_asc' | 'rating_desc' | 'rating_asc' | 'title_asc'
@@ -107,7 +102,7 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {watching.map((item) => (
             <div key={item.id} className="flex flex-col gap-2">
-              <div className="relative aspect-[2/3] bg-surface">
+              <div className="relative aspect-[2/3] bg-surface rounded-lg overflow-hidden">
                 {item.poster_path && (
                   <Image
                     src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
@@ -120,12 +115,10 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
               </div>
               <p className="text-text text-sm font-medium line-clamp-1">{item.title}</p>
               <WatchProviders movieId={item.tmdb_id} />
-              <form action={markAsWatchedForm.bind(null, item.id)}>
-                <button className="text-xs text-accent">Mark as watched</button>
-              </form>
-              <form action={removeFromWatchlistForm.bind(null, item.id)}>
-                <button className="text-xs text-accent-red">Remove</button>
-              </form>
+              <div className="flex gap-1">
+                <ActionIconButton icon={Check} label="Watched" variant="accent" onAction={() => markAsWatched(item.id)} />
+                <ActionIconButton icon={Trash2} label="Remove" variant="danger" onAction={() => removeFromWatchlist(item.id)} />
+                </div>
             </div>
           ))}
         </div>
@@ -138,7 +131,7 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {watched.map((item) => (
             <div key={item.id} className="flex flex-col gap-2">
-              <div className="relative aspect-[2/3] bg-surface">
+              <div className="relative aspect-[2/3] bg-surface rounded-lg overflow-hidden">
                 {item.poster_path && (
                   <Image
                     src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
@@ -151,12 +144,10 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
               </div>
               <p className="text-text text-sm font-medium line-clamp-1">{item.title}</p>
               <StarRating itemId={item.id} initialRating={item.rating} />
-              <form action={markAsUnwatchedForm.bind(null, item.id)}>
-                <button className="text-xs text-text-muted hover:text-accent">Mark as unwatched</button>
-                </form>
-              <form action={removeFromWatchlistForm.bind(null, item.id)}>
-                <button className="text-xs text-accent-red">Remove</button>
-              </form>
+                <div className="flex gap-1">
+                <ActionIconButton icon={RotateCcw} label="Watching" variant="info" onAction={() => markAsUnwatched(item.id)} />
+                <ActionIconButton icon={Trash2} label="Remove" variant="danger" onAction={() => removeFromWatchlist(item.id)} />
+                </div>
             </div>
           ))}
         </div>

@@ -66,7 +66,7 @@ export function WrappedCard({ totalWatched, topGenre, averageRating, highestRate
         {highestRated && (
           <div className="flex gap-3 items-center">
             {highestRated.poster_path && (
-              <div className="relative w-16 aspect-[2/3] shrink-0">
+              <div className="relative w-16 aspect-[2/3] shrink-0 rounded-lg overflow-hidden">
                 <Image
                   src={`https://image.tmdb.org/t/p/w185${highestRated.poster_path}`}
                   alt={highestRated.title}

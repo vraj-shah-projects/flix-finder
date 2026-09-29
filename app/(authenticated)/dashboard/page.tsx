@@ -14,7 +14,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl font-bold text-text mb-1">My Watchlist</h1>
+      <h1 className="font-display text-4xl font-bold text-text mb-1">My FlixList</h1>
       <p className="text-text-muted text-sm mb-8">Signed in as {user?.email}</p>
       <WatchlistView items={items ?? []} />
     </div>

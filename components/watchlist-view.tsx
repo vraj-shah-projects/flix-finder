@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import { StarRating } from '@/components/star-rating'
-import { markAsWatched, removeFromWatchlist } from '@/app/watchlist/actions'
+import { markAsWatched, markAsUnwatched, removeFromWatchlist } from '@/app/watchlist/actions'
 
 type WatchlistItem = {
   id: string
@@ -18,6 +18,10 @@ type WatchlistItem = {
 
 async function markAsWatchedForm(itemId: string) {
   await markAsWatched(itemId)
+}
+
+async function markAsUnwatchedForm(itemId: string) {
+  await markAsUnwatched(itemId)
 }
 
 async function removeFromWatchlistForm(itemId: string) {
@@ -144,6 +148,9 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
               </div>
               <p className="text-text text-sm font-medium line-clamp-1">{item.title}</p>
               <StarRating itemId={item.id} initialRating={item.rating} />
+              <form action={markAsUnwatchedForm.bind(null, item.id)}>
+                <button className="text-xs text-text-muted hover:text-accent">Mark as unwatched</button>
+                </form>
               <form action={removeFromWatchlistForm.bind(null, item.id)}>
                 <button className="text-xs text-accent-red">Remove</button>
               </form>

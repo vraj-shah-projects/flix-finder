@@ -53,6 +53,25 @@ export async function markAsWatched(itemId: string) {
   return { success: true }
 }
 
+export async function markAsUnwatched(itemId: string) {
+  const supabase = await createClient()
+  const { data: authData } = await supabase.auth.getClaims()
+  const userId = authData?.claims?.sub
+
+  if (!userId) return { error: 'Not authenticated' }
+
+  const { error } = await supabase
+    .from('watchlist_items')
+    .update({ status: 'watchlist', watched_at: null })
+    .eq('id', itemId)
+    .eq('user_id', userId)
+
+  if (error) return { error: 'Could not update' }
+
+  revalidatePath('/dashboard')
+  return { success: true }
+}
+
 export async function rateMovie(itemId: string, rating: number) {
   const supabase = await createClient()
   const { data: authData } = await supabase.auth.getClaims()

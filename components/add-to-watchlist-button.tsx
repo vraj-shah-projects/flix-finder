@@ -20,16 +20,16 @@ export function AddToWatchlistButton({ movie }: { movie: TmdbMovie }) {
   }
 
   return (
-    <div>
-      <Button
-        onClick={handleAdd}
-        disabled={added}
-        variant={added ? 'ghost' : 'primary'}
-        className="text-xs"
-      >
-        {added ? 'Added' : 'Add to watchlist'}
-      </Button>
-      {error && <p className="text-accent-red text-xs mt-1">{error}</p>}
-    </div>
-  )
+  <div className="flex-1 min-w-0">
+    <Button
+      onClick={handleAdd}
+      disabled={added}
+      variant={added ? 'ghost' : 'primary'}
+      className="text-xs w-full"
+    >
+      {added ? 'Added' : 'Add to watchlist'}
+    </Button>
+    {error && <p className="text-accent-red text-xs mt-1">{error}</p>}
+  </div>
+    )
 }

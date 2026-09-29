@@ -1,33 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function TrailerButton({ movieId }: { movieId: number }) {
-  const [loading, setLoading] = useState(false)
-  const [notFound, setNotFound] = useState(false)
+  const [trailerKey, setTrailerKey] = useState<string | null>(null)
 
-  async function handleClick() {
-    setLoading(true)
-    setNotFound(false)
+  useEffect(() => {
+    let cancelled = false
 
-    const res = await fetch(`/api/tmdb/trailer?movieId=${movieId}`)
-    const data = await res.json()
-
-    setLoading(false)
-
-    if (data.key) {
-      window.open(`https://www.youtube.com/watch?v=${data.key}`, '_blank')
-    } else {
-      setNotFound(true)
+    async function fetchTrailer() {
+      const res = await fetch(`/api/tmdb/trailer?movieId=${movieId}`)
+      const data = await res.json()
+      if (!cancelled) setTrailerKey(data.key ?? null)
     }
-  }
+
+    fetchTrailer()
+    return () => {
+      cancelled = true
+    }
+  }, [movieId])
+
+  if (!trailerKey) return null
 
   return (
-    <div>
-      <button onClick={handleClick} disabled={loading} className="text-xs text-text-muted hover:text-accent">
-        {loading ? 'Loading...' : `${'\u25B6'} Trailer`}
-      </button>
-      {notFound && <p className="text-text-muted text-xs">No trailer found</p>}
-    </div>
+    <a
+      href={`https://www.youtube.com/watch?v=${trailerKey}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-center w-9 h-9 shrink-0 rounded-md bg-accent-red text-text hover:bg-accent-red/90"
+      aria-label="Watch trailer"
+    >
+      {'\u25B6'}
+    </a>
   )
 }

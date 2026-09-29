@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { addToWatchlist } from '@/app/watchlist/actions'
 import type { TmdbMovie } from '@/lib/tmdb'
+import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
+import { TrailerButton } from '@/components/trailer-button'
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
@@ -89,14 +91,10 @@ export default function SearchPage() {
             <p className="text-text text-sm font-medium line-clamp-1">
               {movie.title}
             </p>
-            <Button
-              onClick={() => handleAdd(movie)}
-              disabled={addedIds.has(movie.id)}
-              variant={addedIds.has(movie.id) ? 'ghost' : 'primary'}
-              className="text-xs"
-            >
-              {addedIds.has(movie.id) ? 'Added' : 'Add to watchlist'}
-            </Button>
+            <div className="flex gap-2">
+              <AddToWatchlistButton movie={movie} />
+              <TrailerButton movieId={movie.id} />
+            </div>
           </div>
         ))}
       </div>

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { generateTasteProfile } from '@/lib/gemini'
 import { getPopularMovies, findMovieByTitleAndYear, type TmdbMovie } from '@/lib/tmdb'
 import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
+import { TrailerButton } from '@/components/trailer-button'
 
 export default async function RecommendationsPage() {
   const supabase = await createClient()
@@ -80,7 +81,10 @@ export default async function RecommendationsPage() {
             <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
             <p className="text-text-muted text-xs line-clamp-2">{movie.reason}</p>
             <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
-            <AddToWatchlistButton movie={movie} />
+            <div className="flex gap-2">
+              <AddToWatchlistButton movie={movie} />
+              <TrailerButton movieId={movie.id} />
+            </div>
           </div>
         ))}
       </div>

@@ -72,3 +72,24 @@ export async function findMovieByTitleAndYear(
   const data = await res.json()
   return data.results?.[0] ?? null
 }
+
+export async function getMovieTrailerKey(movieId: number): Promise<string | null> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/videos`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) return null
+
+  const data = await res.json()
+  const videos: { key: string; site: string; type: string; official: boolean }[] = data.results ?? []
+
+  // Prefer an official YouTube trailer, fall back to any trailer, then any teaser
+  const officialTrailer = videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer' && v.official)
+  const anyTrailer = videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer')
+  const anyTeaser = videos.find((v) => v.site === 'YouTube' && v.type === 'Teaser')
+
+  return officialTrailer?.key ?? anyTrailer?.key ?? anyTeaser?.key ?? null
+}

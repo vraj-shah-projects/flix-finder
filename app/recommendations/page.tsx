@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { generateTasteProfile } from '@/lib/gemini'
 import { getPopularMovies, findMovieByTitleAndYear, type TmdbMovie } from '@/lib/tmdb'
+import { AddToWatchlistButton } from '@/components/add-to-watchlist-button'
 
 export default async function RecommendationsPage() {
   const supabase = await createClient()
@@ -78,6 +79,8 @@ export default async function RecommendationsPage() {
             </div>
             <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
             <p className="text-text-muted text-xs line-clamp-2">{movie.reason}</p>
+            <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
+            <AddToWatchlistButton movie={movie} />
           </div>
         ))}
       </div>
@@ -102,6 +105,7 @@ function PosterGrid({ movies }: { movies: TmdbMovie[] }) {
             )}
           </div>
           <p className="text-text text-sm font-medium line-clamp-1">{movie.title}</p>
+          <AddToWatchlistButton movie={movie} />
         </div>
       ))}
     </div>

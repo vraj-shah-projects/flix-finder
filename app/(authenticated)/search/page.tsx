@@ -15,6 +15,9 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false)
   const [addedIds, setAddedIds] = useState<Set<number>>(new Set())
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
+  const [mode, setMode] = useState<'title' | 'mood'>('title')
+  const [moodQuery, setMoodQuery] = useState('')
+  const [moodSummary, setMoodSummary] = useState<string | null>(null)
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
@@ -29,6 +32,36 @@ export default function SearchPage() {
       setResults(data.results ?? [])
     } catch {
       setStatusMessage('Search failed. Try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleMoodSearch(e: React.FormEvent) {
+    e.preventDefault()
+    if (!moodQuery.trim()) return
+
+    setLoading(true)
+    setStatusMessage(null)
+    setMoodSummary(null)
+
+    try {
+      const res = await fetch('/api/mood-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood: moodQuery }),
+      })
+      const data = await res.json()
+
+      if (data.error) {
+        setStatusMessage(data.error)
+        setResults([])
+      } else {
+        setResults(data.movies)
+        setMoodSummary(data.summary)
+      }
+    } catch {
+      setStatusMessage('Mood search failed. Try again.')
     } finally {
       setLoading(false)
     }
@@ -51,14 +84,38 @@ export default function SearchPage() {
         Search movies
       </h1>
 
-      <form onSubmit={handleSearch} className="flex gap-2 mb-6">
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for a movie..."
-        />
-        <Button type="submit">Search</Button>
-      </form>
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={() => setMode('title')}
+          className={`text-sm font-medium ${mode === 'title' ? 'text-accent' : 'text-text-muted'}`}
+        >
+          Search by title
+        </button>
+        <button
+          onClick={() => setMode('mood')}
+          className={`text-sm font-medium ${mode === 'mood' ? 'text-accent' : 'text-text-muted'}`}
+        >
+          Search by mood
+        </button>
+      </div>
+
+      {mode === 'title' ? (
+        <form onSubmit={handleSearch} className="flex gap-2 mb-6">
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search for a movie..." />
+          <Button type="submit">Search</Button>
+        </form>
+      ) : (
+        <form onSubmit={handleMoodSearch} className="flex gap-2 mb-6">
+          <Input
+            value={moodQuery}
+            onChange={(e) => setMoodQuery(e.target.value)}
+            placeholder="e.g. something like Eternal Sunshine but funnier"
+          />
+          <Button type="submit">Search</Button>
+        </form>
+      )}
+
+      {moodSummary && <p className="text-text-muted text-sm mb-4 italic">{moodSummary}</p>}
 
       {statusMessage && (
         <p className="text-accent text-sm mb-4">{statusMessage}</p>

@@ -93,3 +93,30 @@ export async function getMovieTrailerKey(movieId: number): Promise<string | null
 
   return officialTrailer?.key ?? anyTrailer?.key ?? anyTeaser?.key ?? null
 }
+
+const NAME_TO_GENRE_ID: Record<string, number> = Object.fromEntries(
+  Object.entries(GENRE_MAP).map(([id, name]) => [name.toLowerCase(), Number(id)])
+)
+
+export function genreNamesToIds(names: string[]): number[] {
+  return names
+    .map((name) => NAME_TO_GENRE_ID[name.toLowerCase()])
+    .filter((id): id is number => id !== undefined)
+}
+
+export async function discoverMoviesByGenres(genreIds: number[]): Promise<TmdbMovie[]> {
+  const genreParam = genreIds.join(',')
+  const url = `${TMDB_BASE_URL}/discover/movie?with_genres=${genreParam}&sort_by=popularity.desc`
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
+
+  if (!res.ok) throw new Error(`TMDB discover failed: ${res.status}`)
+
+  const data = await res.json()
+  return data.results
+}

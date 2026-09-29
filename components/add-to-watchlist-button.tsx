@@ -27,7 +27,7 @@ export function AddToWatchlistButton({ movie }: { movie: TmdbMovie }) {
       variant={added ? 'ghost' : 'primary'}
       className="text-xs w-full"
     >
-      {added ? 'Added' : 'Add to watchlist'}
+      {added ? "Added \u2714" : 'Watch +'}
     </Button>
     {error && <p className="text-accent-red text-xs mt-1">{error}</p>}
   </div>

@@ -4,21 +4,29 @@ import { useEffect, useState } from 'react'
 
 export function TrailerButton({ movieId }: { movieId: number }) {
   const [trailerKey, setTrailerKey] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let cancelled = false
+    setLoading(true)
 
-    async function fetchTrailer() {
-      const res = await fetch(`/api/tmdb/trailer?movieId=${movieId}`)
-      const data = await res.json()
-      if (!cancelled) setTrailerKey(data.key ?? null)
-    }
+    fetch(`/api/tmdb/trailer?movieId=${movieId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled) {
+          setTrailerKey(data.key ?? null)
+          setLoading(false)
+        }
+      })
 
-    fetchTrailer()
     return () => {
       cancelled = true
     }
   }, [movieId])
+
+  if (loading) {
+    return <div className="w-9 h-9 shrink-0 rounded-md bg-surface animate-pulse" />
+  }
 
   if (!trailerKey) return null
 

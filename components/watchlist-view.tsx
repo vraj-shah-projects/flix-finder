@@ -69,31 +69,43 @@ export function WatchlistView({ items }: { items: WatchlistItem[] }) {
   return (
     <div>
       <div className="flex gap-4 mb-8 flex-wrap">
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as SortOption)}
-          className="bg-surface text-text text-sm px-3 py-2 rounded-md border border-text-muted/20"
-        >
-          <option value="added_desc">Recently added</option>
-          <option value="added_asc">Oldest added</option>
-          <option value="rating_desc">Highest rated</option>
-          <option value="rating_asc">Lowest rated</option>
-          <option value="title_asc">Title (A-Z)</option>
-        </select>
+        <div className="flex flex-col gap-1">
+            <label htmlFor="sort" className="text-text-muted text-xs font-medium">
+            Sort by
+            </label>
+            <select
+            id="sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortOption)}
+            className="bg-surface text-text text-sm px-3 py-2 rounded-lg border border-border"
+            >
+            <option value="added_desc">Recently added</option>
+            <option value="added_asc">Oldest added</option>
+            <option value="rating_desc">Highest rated</option>
+            <option value="rating_asc">Lowest rated</option>
+            <option value="title_asc">Title (A-Z)</option>
+            </select>
+        </div>
 
-        <select
-          value={genreFilter}
-          onChange={(e) => setGenreFilter(e.target.value)}
-          className="bg-surface text-text text-sm px-3 py-2 rounded-md border border-text-muted/20"
-        >
-          <option value="all">All genres</option>
-          {allGenres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="flex flex-col gap-1">
+            <label htmlFor="genre-filter" className="text-text-muted text-xs font-medium">
+            Filter by
+            </label>
+            <select
+            id="genre-filter"
+            value={genreFilter}
+            onChange={(e) => setGenreFilter(e.target.value)}
+            className="bg-surface text-text text-sm px-3 py-2 rounded-lg border border-border"
+            >
+            <option value="all">All genres</option>
+            {allGenres.map((genre) => (
+                <option key={genre} value={genre}>
+                {genre}
+                </option>
+            ))}
+            </select>
+        </div>
+        </div>
 
       <section className="mb-10">
         <h2 className="font-display text-2xl font-bold text-text mb-4">

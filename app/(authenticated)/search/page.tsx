@@ -87,18 +87,22 @@ export default function SearchPage() {
         Search movies
       </h1>
 
-      <div className="flex gap-4 mb-4">
+      <div className="inline-flex gap-1 p-1 mb-6 rounded-lg bg-surface border border-border">
         <button
           onClick={() => setMode('title')}
-          className={`text-sm font-medium ${mode === 'title' ? 'text-accent' : 'text-text-muted'}`}
+          className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+            mode === 'title' ? 'bg-accent text-bg' : 'text-text-muted hover:text-text'
+          }`}
         >
           Title Search
         </button>
         <button
           onClick={() => setMode('mood')}
-          className={`text-sm font-medium ${mode === 'mood' ? 'text-accent' : 'text-text-muted'}`}
+          className={`text-sm font-medium px-3 py-1.5 rounded-md transition-colors ${
+            mode === 'mood' ? 'bg-accent text-bg' : 'text-text-muted hover:text-text'
+          }`}
         >
-          Smart Search 
+          Smart Search
         </button>
       </div>
 

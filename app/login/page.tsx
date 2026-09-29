@@ -13,10 +13,10 @@ export default async function LoginPage({
     <div className="min-h-screen flex items-center justify-center bg-bg px-4">
       <div className="w-full max-w-sm">
         <h1 className="font-display text-4xl font-bold text-text mb-1">
-          Welcome back
+          Welcome back!
         </h1>
         <p className="text-text-muted text-sm mb-8">
-          Sign in to your watchlist
+          Sign in to FlixFinder
         </p>
 
         {error && (

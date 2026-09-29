@@ -6,9 +6,9 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
   const { data: authData } = await supabase.auth.getClaims()
 
   return (
-    <div className="flex-1 px-4 sm:px-8 py-8 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-bg">
       <NavBar email={authData?.claims?.email} />
-      <div className="flex-1 px-8 py-8 max-w-5xl mx-auto">{children}</div>
+      <div className="px-4 py-8 max-w-5xl mx-auto">{children}</div>
     </div>
   )
 }

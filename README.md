@@ -2,8 +2,8 @@
 
 A personal movie watchlist tracker - search, track, rate, and get AI-powered recommendations based on your taste.
 
-**Name:** Vraj Shah
-**Email:** vraj.shah.028@gmail.com
+**Name:** Vraj Shah | 
+**Email:** vraj.shah.028@gmail.com | 
 **Deployed project:** https://flix-finder-delta.vercel.app/
 
 ---
